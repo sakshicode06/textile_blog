@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textile ERP Software Implementation Guide for Indian Manufacturers | Kunxite Blog</title>
+    <meta name="description" content="A comprehensive guide to implementing Cloud ERP in Indian textile manufacturing. Learn about GST compliance, shop floor automation, and Industry 4.0 readiness for spinning, weaving, and processing units.">
+    
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="Textile ERP Software Implementation Guide for Indian Manufacturers">
+    <meta property="og:description" content="Discover how modern ERP solutions transform Indian textile businesses through automated GST, real-time inventory, and piece-rate labor tracking.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.kunxite.com/blog/textile-erp-implementation-guide-india">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&q=80&w=1200">
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6d38d7;
+            --primary-foreground: #ffffff;
+            --background: #000000;
+            --foreground: #ffffff;
+            --muted: #111111;
+            --muted-foreground: #a1a1aa;
+            --card: #09090b;
+            --card-foreground: #ffffff;
+            --border: #27272a;
+            --accent: #6d38d7;
+            --max-width: 1280px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #09090b;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav.navbar {
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--muted-foreground);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        header.hero {
+            background-color: var(--background);
+            color: white;
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .hero-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--muted-foreground);
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb a {
+            color: var(--muted-foreground);
+            text-decoration: none;
+        }
+
+        .category-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--muted-foreground);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-highlight {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.25rem;
+            border-radius: 100px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .hero-highlight svg {
+            color: var(--primary);
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(109, 56, 215, 0.25);
+            height: 450px;
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Content Section */
+        .main-content {
+            padding: 5rem 2rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        .audience-box {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .audience-label {
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .audience-text {
+            font-size: 1.1rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* Article Styling */
+        article section {
+            margin-bottom: 4rem;
+        }
+
+        article h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #000;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        article p {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+            text-align: justify;
+        }
+
+        article ul {
+            margin-bottom: 2rem;
+            list-style: none;
+        }
+
+        article li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: #4b5563;
+        }
+
+        article li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .bold-text {
+            font-weight: 700;
+            color: #111;
+        }
+
+        .inner-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .inner-link:hover {
+            border-bottom-color: var(--primary);
+        }
+
+        /* Sidebar Cards */
+        aside {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #000;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .takeaway-list {
+            list-style: none;
+        }
+
+        .takeaway-item {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .takeaway-item svg {
+            flex-shrink: 0;
+            color: var(--primary);
+        }
+
+        .cta-card {
+            background-color: var(--background);
+            color: white;
+            border: 1px solid var(--border);
+        }
+
+        .cta-card .card-title {
+            color: white;
+        }
+
+        .cta-card p {
+            color: var(--muted-foreground);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-full {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--background);
+            color: white;
+            padding: 5rem 2rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand p {
+            color: var(--muted-foreground);
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-heading {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--muted-foreground);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted-foreground);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2.75rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+            }
+            h1 {
+                font-size: 2.25rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="logo">BOLTO<span>ERP</span></a>
+        <div class="nav-links">
+            <a href="/service">Services</a>
+            <a href="/our-product">Products</a>
+            <a href="/portfolio">Portfolio</a>
+            <a href="/blog">Resources</a>
+            <a href="/contact" class="btn-primary">Book a Demo</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <nav class="breadcrumb">
+                    <a href="/">Home</a> <span>/</span>
+                    <a href="/blog">Blog</a> <span>/</span>
+                    <span>Implementation</span>
+                </nav>
+                <div class="category-badge">Manufacturing Strategy</div>
+                <h1>Textile ERP Software Implementation Guide for Indian Manufacturers</h1>
+                <p class="hero-subtitle">Moving from manual registers to a cloud-based digital nervous system. A comprehensive guide for Indian textile units navigating Industry 4.0.</p>
+                <div class="hero-highlight">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    A 12-week roadmap for 100% digital visibility.
+                </div>
+            </div>
+            <div class="hero-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&q=80&w=1200" alt="Modern Textile Factory Architecture">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-grid">
+            <!-- Left Side: Article Content -->
+            <article>
+                <div class="audience-box">
+                    <p class="audience-label">Target Audience</p>
+                    <p class="audience-text">Managing Directors, Factory Heads, and IT Decision Makers in spinning, weaving, and garment processing units.</p>
+                </div>
+
+                <section>
+                    <h2>1. The Paradigm Shift in Indian Textile Manufacturing</h2>
+                    <p>The transition from legacy systems—such as manual logbooks, fragmented Excel sheets, or basic on-premise accounting software—to a centralized, Cloud-based Enterprise Resource Planning (ERP) ecosystem is no longer just an operational upgrade for Indian textile businesses; it has become a fundamental survival necessity. In an era defined by razor-thin profit margins, highly volatile raw material pricing (cotton, yarn, and chemical dyes), and increasingly stringent regulatory demands from the Indian government, operational opacity is a liability.</p>
+                    <p>Whether operating a small-scale power loom unit in Surat, a spinning mill in Coimbatore, an export-oriented garment factory in Tirupur, or a massive composite mill in Ludhiana, manufacturers face identical structural challenges. Data remains trapped in functional silos. Production managers don't have real-time visibility into raw fiber warehouse inventory; finance teams struggle with delayed cost-of-production metrics; and executive leadership lacks the accurate data needed to quote competitive prices for global export tenders.</p>
+                    <p>An integrated, cloud-driven ERP serves as the digital central nervous system of a modern textile facility. It bridges the critical gaps between procurement, the production shop floor, quality management, supply chain logistics, and financial accounts into a single, unalterable source of truth. By implementing a modern cloud architecture, Indian textile Small and Medium Enterprises (SMEs) and large-scale enterprises alike can eliminate systemic material waste, dramatically reduce machine idle time, optimize human resources, and build a highly responsive production pipeline that scales seamlessly.</p>
+                </section>
+
+                <section>
+                    <h2>2. Navigating India-Specific Regulatory Frameworks and GST Compliance</h2>
+                    <p>One of the most complex hurdles for any manufacturing business in India is maintaining absolute compliance with local tax structures and labor laws. In the textile vertical, this complexity is magnified due to multi-stage processing where raw materials change physical states rapidly (e.g., fiber to yarn, yarn to grey fabric, grey fabric to processed/dyed fabric). Each of these stages often involves different <a href="/blog/bolto-erp-gst-job-work-textile-trading" class="inner-link">Job Work contracts</a>, multi-location warehouses, and varying tax implications.</p>
+                    <p>An enterprise software solution tailored for the Indian landscape must natively solve three non-negotiable compliance pillars:</p>
+                    <ul>
+                        <li><span class="bold-text">Automated E-way Bill and E-invoicing Generation:</span> The system must connect via secure APIs directly to the government's GSTN portal. When a sales order or dispatch note is created for a shipment of fabric rolls, the ERP must automatically generate the matching E-invoice and E-way bill instantly, removing the human error associated with manual portal entry.</li>
+                        <li><span class="bold-text">HSN Code Management at the Item Level:</span> Textile products fall under diverse HSN categories with different GST slabs (e.g., 5% for certain fabrics vs. 12% for specific finished apparel). The cloud database must track inventory and apply automated taxation based on exact composition and pricing thresholds dynamically.</li>
+                        <li><span class="bold-text">Input Tax Credit (ITC) Reconciliation:</span> Profitability in Indian manufacturing relies heavily on capturing every single rupee of ITC. The system must automatically cross-reference purchase invoices against GSTR-2B data. If a raw material supplier fails to file their taxes, the ERP automatically flags the discrepancy and holds outstanding vendor payments.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>3. Solving Core Operational Challenges on the Shop Floor</h2>
+                    <p>Beyond compliance, the true return on investment (ROI) of a cloud architecture is realized on the dirty, fast-paced factory shop floor. Traditional textile management relies on historical data—finding out what went wrong weeks after the batch has already been processed and shipped. Cloud systems shift the paradigm to real-time execution.</p>
+                    
+                    <h3>A. Raw Material Procurement and Landed Costing</h3>
+                    <p>Textile manufacturing margins are won or lost at the time of procurement. When purchasing cotton bales or synthetic yarn yarns, prices fluctuate daily based on global commodity markets. A professional system tracks automated Purchase Requisitions (PR) linked directly to actual production orders. When a sales contract for 10,000 cotton shirts is signed, the system automatically checks current stock levels, factors in average wastage rates, and flags the exact amount of yarn and accessories needed.</p>
+                    
+                    <h3>B. Perpetual Inventory, Lot Tracking, and Shade Variation</h3>
+                    <p>Textile inventory is highly fluid and difficult to track without granular controls. A single fabric type can have dozens of color variants and structural specifications. The implementation of barcode and RFID tags allows for absolute end-to-end traceability. Every batch of fabric is assigned a unique <a href="/blog/bolto-erp-lot-wise-traceability" class="inner-link">Lot Number</a>.</p>
+                    <p>This is critical for solving the industry's biggest nightmare: <span class="bold-text">Shade Variation</span>. If a dye lot changes slightly during a chemical process, the system tracks which specific rolls belong to that lot, preventing mismatched fabric panels from being stitched together into a single garment order, which would result in expensive buyer rejections.</p>
+                    
+                    <h3>C. Precision Labor Costing and the Piece-Rate Challenge</h3>
+                    <p>A massive percentage of the workforce in Indian garment factories operates on a Piece-Rate (Job Work) payment system, where workers are paid exactly based on their daily physical output. Manual tracking via paper tokens leads to massive payroll leakage, padding, and disputes. A modern SaaS framework connects floor manager tablets directly to the HR/Payroll module, calculating daily earnings while applying PF/ESI deductions automatically.</p>
+                </section>
+
+                <section>
+                    <h2>4. Step-by-Step Deployment and Industry 4.0 Readiness</h2>
+                    <p>Transitioning away from a legacy infrastructure can feel like changing the engines of an airplane while it is mid-flight. To avoid catastrophic factory downtime, deployment must follow a structured, phased methodology:</p>
+                    <ul>
+                        <li><span class="bold-text">Phase 1: Pre-Transition Audit (Weeks 1–4):</span> Fully document existing workflows. Standardize Units of Measurements (UoMs) across all departments. Clean and scrub master vendor and client directories to remove duplicate entries.</li>
+                        <li><span class="bold-text">Phase 2: Core Module Pilot Launch (Weeks 5–8):</span> Deploy the system to a single, controlled department first—preferably Procurement and Raw Warehouse Management. Run the cloud system in parallel with legacy Excel logs to verify data consistency.</li>
+                        <li><span class="bold-text">Phase 3: Production Floor Integration (Weeks 9–12):</span> Roll out tablets to floor supervisors and initiate specialized language training. Begin recording real-time machine uptime, yarn breakages, and automated piece-rate logs directly into the cloud system.</li>
+                        <li><span class="bold-text">Phase 4: Full Go-Live and Optimization (Month 4+):</span> Activate automated executive dashboards. Transition from looking at old historical data to analyzing real-time KPIs such as contribution per loom hour, yarn-to-fabric realization percentages, and current outstanding tax credits.</li>
+                    </ul>
+                    <p>This phased <a href="/blog/bolto-erp-implementation-roadmap-textile" class="inner-link">Implementation Roadmap</a> ensures that your team is not overwhelmed by the digital shift and the factory floor maintains its rhythm during the changeover.</p>
+                </section>
+
+                <section>
+                    <h2>5. Conclusion: Future-Proofing Your Factory</h2>
+                    <p>Ultimately, the goal of an ERP implementation in a textile unit is to transform the business into a data-driven enterprise. As India moves towards becoming a global textile hub under initiatives like PLI (Production Linked Incentive) schemes, only those manufacturers who possess digital agility will be able to capture large-scale international contracts. By centralizing operations, ensuring 100% tax compliance, and mastering the floor-level costing, your textile business will be prepared for the demands of 2026 and beyond.</p>
+                </section>
+            </article>
+
+            <!-- Right Side: Sidebar -->
+            <aside>
+                <div class="card">
+                    <p class="card-title">Key Takeaways</p>
+                    <p class="card-description">Essential points to consider for your digital transformation journey.</p>
+                    <ul class="takeaway-list">
+                        <li class="takeaway-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>API-integrated GSTR-2B reconciliation.</span>
+                        </li>
+                        <li class="takeaway-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Lot-wise traceability for shade variation.</span>
+                        </li>
+                        <li class="takeaway-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Automated piece-rate labor calculations.</span>
+                        </li>
+                        <li class="takeaway-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Real-time machine uptime monitoring.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card cta-card">
+                    <p class="card-title">Start Your Digital Journey</p>
+                    <p>We've implemented Bolto ERP across process houses, spinning mills, and garment factories across India. Let our experts help you build a custom roadmap.</p>
+                    <a href="/contact" class="btn-primary btn-full">
+                        Book a Free Strategy Session
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="/" class="logo">BOLTO<span>ERP</span></a>
+                <p>Premium Enterprise SaaS solutions built for the future of Indian manufacturing and retail.</p>
+            </div>
+            <div>
+                <p class="footer-heading">Solutions</p>
+                <ul class="footer-links">
+                    <li><a href="/service">Textile ERP</a></li>
+                    <li><a href="/service">HRMS & Payroll</a></li>
+                    <li><a href="/service">Retail POS</a></li>
+                    <li><a href="/service">Inventory Management</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-heading">Company</p>
+                <ul class="footer-links">
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/portfolio">Success Stories</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/career">Careers</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-heading">Resources</p>
+                <ul class="footer-links">
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/docs">Documentation</a></li>
+                    <li><a href="/support">Help Center</a></li>
+                    <li><a href="/legal">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Kunxite Technologies. All rights reserved.</p>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#" style="color: inherit; text-decoration: none;">Twitter</a>
+                <a href="#" style="color: inherit; text-decoration: none;">LinkedIn</a>
+                <a href="#" style="color: inherit; text-decoration: none;">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav.navbar');
+            if (window.scrollY > 50) {
+                nav.style.padding = '0.75rem 2rem';
+                nav.style.backgroundColor = 'rgba(0, 0, 0, 0.98)';
+            } else {
+                nav.style.padding = '1rem 2rem';
+                nav.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
